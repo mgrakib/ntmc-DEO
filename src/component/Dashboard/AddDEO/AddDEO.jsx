@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { addToDb } from '../../Unilities/common';
+import { addToDb, jailNamesList } from '../../Unilities/common';
 
 const AddDEO = () => {
     const [DEOName, setDEOName] = useState('');
@@ -74,11 +74,11 @@ const AddDEO = () => {
 								id='jailName'
 								className='border border-black rounded-md outline-none py-2 px-3 ml-3'
 							>
-								<option value='select'>Select</option>
-								<option value='Kashimpur-1'>Kashimpur-1</option>
-								<option value='Kashimpur-2'>Kashimpur-2</option>
-								<option value='Kashimpur-3'>Kashimpur-3</option>
-								<option value='Kashimpur-4'>Kashimpur-4</option>
+								{jailNamesList.map(jailName => (
+									<option value={jailName.value}>
+										{jailName.label}
+									</option>
+								))}
 							</select>
 						</div>
 					</div>

@@ -1,12 +1,27 @@
-import React, { useState } from 'react';
-import { getDataFromDB } from '../../Unilities/common';
+import React, { useState, useRef } from "react";
+import { getDataFromDB, jailNamesList } from '../../Unilities/common';
 
 const TransfarDEO = () => {
+    // option
+    
+    
+    // const options = [
+	// 	{ value: "option1", label: "Option 1", disabled: true },
+	// 	{ value: "option2", label: "Option 2", disabled: false },
+	// 	{ value: "option3", label: "Option 3", disabled: true },
+	// ];
+     
     // set DEO Name Autometic DEO Name
     const [DEOName, setDEOName] = useState("");
+    // set DEO Current wordkStation
     const [DEOCurrentJail, setDEOCurrentJail] = useState("");
-    
+
+    const [isDisable, setIsDisable] = useState(false);
+    // set DEO Id 
     const [DEOID, setDEOID] = useState("");
+
+    // **********i dont now ********
+    const selectRef = useRef(null);
     
 	const handelDEOID = event => {
 		// set value to DEO ID felidl
@@ -17,10 +32,28 @@ const TransfarDEO = () => {
 		for (const jailName in allDeoList) {
 			for (const deoID in allDeoList[jailName]) {
                 if (deoID == event.target.value) {
-                    console.log(jailName);
+                    
                     
                     setDEOName(allDeoList[jailName][deoID]);
                     setDEOCurrentJail(jailName);
+                    
+                    for (const jail of jailNamesList) {
+                        if (jail.value === jailName) {
+                            jail.disabled = true;    
+                        }
+                        
+                        
+                    }
+
+                    // const options = selectRef.current.options;
+					// const values = [];
+
+					// for (let i = 0; i < options.length; i++) {
+					// 	values.push(options[i].value);
+					// }
+                    // // console.log('from ', values);
+                    
+                    
                     return;
                 } else {
                     setDEOName('');
@@ -29,7 +62,8 @@ const TransfarDEO = () => {
 			}
 		}
 	};
-
+const dynamicAttribute = "disabled";
+		const isDisabled = true;
 	return (
 		<div>
 			<input
@@ -93,24 +127,34 @@ const TransfarDEO = () => {
 
 							{/* transfar jail */}
 							<div className='w-[47%]'>
-								<select
-									value={DEOCurrentJail}
-									id='jailName'
+								{/* <select
+									ref={selectRef}
 									className='border border-black rounded-md outline-none py-2 px-3 w-full'
 								>
-									<option value='select'>Select</option>
-									<option value='Kashimpur-1'>
-										Kashimpur-1
-									</option>
-									<option value='Kashimpur-2'>
-										Kashimpur-2
-									</option>
-									<option value='Kashimpur-3'>
-										Kashimpur-3
-									</option>
-									<option value='Kashimpur-4'>
-										Kashimpur-4
-									</option>
+									{options.map(option => (
+										<option
+											key={option.value}
+											value={option.value}
+											disabled={option.disabled}
+										>
+											{option.value}
+										</option>
+									))}
+								</select> */}
+
+								<select
+									ref={selectRef}
+									className='border border-black rounded-md outline-none py-2 px-3 w-full'
+								>
+									{jailNamesList.map(jailName => (
+										<option
+											key={jailName.value}
+											value={jailName.value}
+											disabled={jailName.disabled}
+										>
+											{jailName.label}
+										</option>
+									))}
 								</select>
 							</div>
 						</div>
