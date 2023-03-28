@@ -33,27 +33,16 @@ const TransfarDEO = () => {
 			for (const deoID in allDeoList[jailName]) {
                 if (deoID == event.target.value) {
                     
-                    
                     setDEOName(allDeoList[jailName][deoID]);
                     setDEOCurrentJail(jailName);
                     
                     for (const jail of jailNamesList) {
                         if (jail.value === jailName) {
                             jail.disabled = true;    
+                        } else {
+                            jail.disabled = false; 
                         }
-                        
-                        
                     }
-
-                    // const options = selectRef.current.options;
-					// const values = [];
-
-					// for (let i = 0; i < options.length; i++) {
-					// 	values.push(options[i].value);
-					// }
-                    // // console.log('from ', values);
-                    
-                    
                     return;
                 } else {
                     setDEOName('');

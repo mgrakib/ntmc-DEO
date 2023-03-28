@@ -8,6 +8,11 @@ const jailNamesList = [
 	{ value: "kashimpur-4", label: "Kashimpur-4", disabled: false },
 	{ value: "Dhaka Centeral Jail", label: "Dhaka Centeral Jail", disabled: false },
 	{ value: "Gazipur District Jail", label: "Gazipur District Jail", disabled: false },
+	{ value: "Barishal Central Jail", label: "Barishal Central Jail", disabled: false },
+	{ value: "Rangpur Central Jail", label: "Rangpur Central Jail", disabled: false },
+	{ value: "B-Bariya District Jail", label: "B-Bariya District Jail", disabled: false },
+	{ value: "Cumilla Central Jail", label: "Cumilla Central Jail", disabled: false },
+	{ value: "Cox's Bazar District Jail", label: "Cox's Bazar District Jail", disabled: false },
 ];
 
 const addToDb = (jailName, DEOName, DEOID) => {
