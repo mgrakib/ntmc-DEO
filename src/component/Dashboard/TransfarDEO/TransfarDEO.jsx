@@ -2,35 +2,35 @@ import React, { useState, useRef } from "react";
 import { getDataFromDB, jailNamesList } from '../../Unilities/common';
 
 const TransfarDEO = () => {
-    // option
-    
-    
-    // const options = [
-	// 	{ value: "option1", label: "Option 1", disabled: true },
-	// 	{ value: "option2", label: "Option 2", disabled: false },
-	// 	{ value: "option3", label: "Option 3", disabled: true },
-	// ];
-     
     // set DEO Name Autometic DEO Name
     const [DEOName, setDEOName] = useState("");
     // set DEO Current wordkStation
     const [DEOCurrentJail, setDEOCurrentJail] = useState("");
-
-    const [isDisable, setIsDisable] = useState(false);
     // set DEO Id 
-    const [DEOID, setDEOID] = useState("");
+	const [DEOID, setDEOID] = useState("");
+	
+	// select desable current workstation 
+	const [isDisable, setIsDisable] = useState(false);
+	
+	// new workStation 
+	const [DEONewJail, setDEONewJail] = useState('');
+	const handelTransferJail = (event) => {
+		setDEONewJail(event.target.value)
+	}
 
-    // **********i dont now ********
-    const selectRef = useRef(null);
-    
+	// handel transfer DEO 
 	const handelDEOID = event => {
 		// set value to DEO ID felidl
 		setDEOID(event.target.value);
 
 		// get all existing Value
-		const allDeoList = getDataFromDB();
+		const allDeoList = getDataFromDB("deo-list");
+		// loop to get jailName as key
 		for (const jailName in allDeoList) {
+
+			// loop to get id as key 
 			for (const deoID in allDeoList[jailName]) {
+				
                 if (deoID == event.target.value) {
                     
                     setDEOName(allDeoList[jailName][deoID]);
@@ -51,8 +51,56 @@ const TransfarDEO = () => {
 			}
 		}
 	};
-const dynamicAttribute = "disabled";
-		const isDisabled = true;
+
+	const handelTransfer = () => {
+		
+		if (!DEOID || !DEONewJail) {
+
+			alert('you cant pass empty vlaue')
+		}
+		else if (!DEOName || !DEOCurrentJail ) {
+			alert(`${DEOID} id is not add`)
+		}
+		else {
+			const allDeoList = getDataFromDB("deo-list");
+
+			// deleate DEO from old workstation
+			for (const transferDEOID in allDeoList[DEOCurrentJail]) {
+				if (transferDEOID === DEOID) {
+					delete allDeoList[DEOCurrentJail][transferDEOID];
+				}
+			}
+			if (!allDeoList[DEONewJail]) {
+				allDeoList[DEONewJail] = { [DEOID]: DEOName };
+				console.log(allDeoList);
+				
+			} else {
+				// add DEO to new Workstation
+				for (const newADDID in allDeoList[DEONewJail]) {
+					console.log(newADDID);
+
+					allDeoList[DEONewJail] = {
+						...allDeoList[DEONewJail],
+						[DEOID]: DEOName,
+					};
+				}
+			}
+			localStorage.setItem("deo-list", JSON.stringify(allDeoList));
+
+			setDEOName("");
+			setDEOCurrentJail("");
+			setDEOID("");
+			setDEONewJail("");
+		}
+	}
+
+	
+	const handelClose = () => {
+		setDEOName('');
+		setDEOCurrentJail("");
+		setDEOID("");
+		setDEONewJail("");
+	}
 	return (
 		<div>
 			<input
@@ -116,23 +164,9 @@ const dynamicAttribute = "disabled";
 
 							{/* transfar jail */}
 							<div className='w-[47%]'>
-								{/* <select
-									ref={selectRef}
-									className='border border-black rounded-md outline-none py-2 px-3 w-full'
-								>
-									{options.map(option => (
-										<option
-											key={option.value}
-											value={option.value}
-											disabled={option.disabled}
-										>
-											{option.value}
-										</option>
-									))}
-								</select> */}
-
 								<select
-									ref={selectRef}
+									value={DEONewJail}
+									onChange={handelTransferJail}
 									className='border border-black rounded-md outline-none py-2 px-3 w-full'
 								>
 									{jailNamesList.map(jailName => (
@@ -154,12 +188,14 @@ const dynamicAttribute = "disabled";
 						<label
 							htmlFor='transferDEO'
 							className='btn bg-red-500'
+							onClick={handelClose}
 						>
 							Close
 						</label>
 						<label
 							htmlFor='transferDEO'
 							className='btn bg-green-500'
+							onClick={handelTransfer}
 						>
 							Transfer
 						</label>

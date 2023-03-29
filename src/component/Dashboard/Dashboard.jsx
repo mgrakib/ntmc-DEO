@@ -1,7 +1,9 @@
-import React from 'react';
-const Dashboard = () => {
-    const date = new Date().toDateString();
-    return (
+import React, { useEffect, useState } from 'react';
+import { getDataFromDB } from '../Unilities/common';
+const Dashboard = ({ total, totalEntry, totalRelease }) => {
+	const date = new Date().toDateString();
+
+	return (
 		<>
 			<div className='bg-[#0C1829] py-3 px-11 flex items-center justify-between text-white'>
 				<div className='flex items-center gap-4'>
@@ -21,11 +23,26 @@ const Dashboard = () => {
 				</div>
 			</div>
 
+			<div className='flex items-center justify-between'>
+				<p>
+					Total DEO : <span className='font-bold'>{total}</span>
+				</p>
+				<div className='flex items-center gap-7'>
+					<p>Total Entry :{totalEntry}</p>
+					<p>Total Release :{totalRelease}</p>
+				</div>
+			</div>
 			<div className='my-[50px] px-[46px] grid grid-cols-1 md:grid-cols-2 gap-8'>
-				<DashboardElement className={"bg-blue-600"}>
+				<DashboardElement
+					htmlFor='dailyReport'
+					className={"bg-blue-600"}
+				>
 					Daily Report
 				</DashboardElement>
-				<DashboardElement className={"bg-green-600"}>
+				<DashboardElement
+					htmlFor='showReport'
+					className={"bg-green-600"}
+				>
 					Show Report
 				</DashboardElement>
 
@@ -49,6 +66,7 @@ const Dashboard = () => {
 	);
 };
 
+// evety but
 const DashboardElement = (props) => {
     return (
 		<div className='bg-[#0C1829] h-[255px] flex items-center justify-center'>

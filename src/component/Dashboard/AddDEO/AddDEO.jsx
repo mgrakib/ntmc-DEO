@@ -1,30 +1,40 @@
 import React, { useState } from 'react';
 import { addToDb, jailNamesList } from '../../Unilities/common';
 
-const AddDEO = () => {
-    const [DEOName, setDEOName] = useState('');
-    const changeNameHandeler = (event) => {
-        setDEOName(event.target.value);
-    }
-    const [DEOID, setDEOID] = useState("");
-    const changeIDHandeler = (event) => {
-        setDEOID(event.target.value);
-    }
+const AddDEO = (props) => {
+	// Change DEO Name
+	const [DEOName, setDEOName] = useState("");
+	const changeNameHandeler = event => {
+		setDEOName(event.target.value);
+	};
+	// Change DEO ID
+	const [DEOID, setDEOID] = useState("");
+	const changeIDHandeler = event => {
+		setDEOID(event.target.value);
+	};
+	// Change DEO Workstation Name
+	const [jailName, setJailName] = useState("select");
+	const changeJailHandelar = event => {
+		setJailName(event.target.value);
+	};
 
-    const [jailName, setJailName] = useState('select');
-    const changeJailHandelar = (event) => {
-        setJailName(event.target.value);
-    }
+	// Handel Done
+	const conformDEOList = () => {
+		addToDb(jailName, DEOName, DEOID, "deo-list");
+		setDEOName("");
+		setDEOID("");
+		setJailName("");
+		props.handelTotal();
+	};
 
+	// Handel close
+	const handelClose = () => {
+		setDEOName("");
+		setDEOID("");
+		setJailName("");
+	};
 
-    const conformDEOList = () => {
-      
-		
-		addToDb(jailName, DEOName, DEOID);
-        
-    }
-
-    return (
+	return (
 		<div>
 			<input
 				type='checkbox'
@@ -75,7 +85,9 @@ const AddDEO = () => {
 								className='border border-black rounded-md outline-none py-2 px-3 ml-3'
 							>
 								{jailNamesList.map(jailName => (
-									<option value={jailName.value}>
+									<option
+										key={jailName.value}
+										value={jailName.value}>
 										{jailName.label}
 									</option>
 								))}
@@ -86,6 +98,7 @@ const AddDEO = () => {
 						<label
 							htmlFor='addDEO'
 							className='btn bg-red-500'
+							onClick={handelClose}
 						>
 							Close
 						</label>
